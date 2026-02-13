@@ -6,7 +6,6 @@ import { AboutSection } from "./components/AboutSection";
 import { SkillsSection } from "./components/SkillsSection";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { Footer } from "./components/Footer";
-import { CommandBar } from "./components/CommandBar";
 import { BackgroundDecorations } from "./components/BackgroundDecorations";
 import { TransitionCurtain } from "./components/TransitionCurtain";
 import T3ProjectPage from "./projects/t3/page";
@@ -90,7 +89,6 @@ export default function App() {
                 <ProjectsSection onOpenT3Project={() => navigateTo("t3")} />
               </main>
               <Footer />
-              <CommandBar />
             </motion.div>
           )}
 

@@ -112,17 +112,7 @@ export default function T3ProjectPage({ onBackToPortfolio }: T3ProjectPageProps)
       </div>
 
       <section className="relative min-h-screen flex items-center justify-center px-4 py-16 sm:py-24 overflow-hidden">
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <video
-            src="/videos/chao-fabrica-hero.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/80 to-black/90" />
-        </div>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/90 to-black" />
 
         <div className="relative z-10 w-full">
           <motion.div
