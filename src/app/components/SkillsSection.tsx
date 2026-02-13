@@ -1,4 +1,6 @@
-import { motion } from "motion/react";
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Code2, Database } from "lucide-react";
 
 export function SkillsSection() {
@@ -15,18 +17,111 @@ export function SkillsSection() {
     }
   ];
 
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+
+    const ctx = gsap.context(() => {
+      mm.add("(min-width: 768px)", () => {
+        if (!sectionRef.current) return;
+        const section = sectionRef.current;
+
+        const header = section.querySelector(".skills-header");
+
+        if (header) {
+          gsap.from(header, {
+            opacity: 0,
+            y: 40,
+            ease: "power4.out",
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          });
+        }
+
+        const cards = gsap.utils.toArray<HTMLElement>(
+          section.querySelectorAll(".skills-card")
+        );
+
+        if (cards.length) {
+          gsap.fromTo(
+            cards,
+            {
+              opacity: 0,
+              y: 150,
+              scale: 0.85,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              ease: "power4.out",
+              stagger: 0.1,
+              scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                end: "top 40%",
+                scrub: 1,
+              },
+            }
+          );
+        }
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        if (!sectionRef.current) return;
+        const section = sectionRef.current;
+
+        const cards = gsap.utils.toArray<HTMLElement>(
+          section.querySelectorAll(".skills-card")
+        );
+
+        if (cards.length) {
+          gsap.fromTo(
+            cards,
+            {
+              opacity: 0,
+              y: 30,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power4.out",
+              stagger: 0.1,
+              scrollTrigger: {
+                trigger: section,
+                start: "top 85%",
+                end: "top 40%",
+                scrub: 1,
+              },
+            }
+          );
+        }
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+      mm.revert();
+    };
+  }, []);
+
   return (
-    <section id="skills" className="py-24 relative">
-      {/* Background accent */}
+    <section
+      ref={sectionRef}
+      id="skills"
+      className="py-24 relative md:-mt-24 z-30 bg-white"
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-4 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ amount: 0.3, once: false }}
-          className="max-w-4xl mb-16"
-        >
+        <div className="skills-header max-w-4xl mb-16">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-px w-12 bg-blue-500" />
             <span className="text-blue-600 font-mono text-sm tracking-wider">02 // ARSENAL</span>
@@ -37,17 +132,13 @@ export function SkillsSection() {
           <p className="text-xl text-slate-600 leading-relaxed">
             Ferramentas que geram resultado e eficiencia.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {skillCategories.map((category, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ amount: 0.3, once: false }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative"
+              className="skills-card group relative"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
               
@@ -63,31 +154,20 @@ export function SkillsSection() {
 
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill, skillIndex) => (
-                    <motion.span
+                    <span
                       key={skillIndex}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ amount: 0.3, once: false }}
-                      transition={{ delay: index * 0.1 + skillIndex * 0.05 }}
-                      whileHover={{ scale: 1.05 }}
                       className="px-3 py-1.5 bg-slate-50 border border-slate-300 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700 rounded-lg text-sm text-slate-700 transition-all duration-200 cursor-default"
                     >
                       {skill}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* Additional Tech Notes */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ amount: 0.3, once: false }}
-          className="mt-16 max-w-4xl mx-auto"
-        >
+        <div className="mt-16 max-w-4xl mx-auto">
           <div className="bg-gradient-to-br from-slate-50 to-blue-50 border-2 border-blue-200 rounded-2xl p-8">
             <div className="flex items-start gap-4">
               <div className="p-2 bg-blue-100 border-2 border-blue-300 rounded-lg">
@@ -101,7 +181,7 @@ export function SkillsSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

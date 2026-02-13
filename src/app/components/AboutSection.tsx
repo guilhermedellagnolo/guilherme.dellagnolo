@@ -1,7 +1,110 @@
-import { motion } from "motion/react";
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Shield, Zap, Target, Award } from "lucide-react";
 
 export function AboutSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+
+    const ctx = gsap.context(() => {
+      mm.add("(min-width: 768px)", () => {
+        if (!sectionRef.current) return;
+        const section = sectionRef.current;
+
+        const header = section.querySelector(".about-header");
+        const left = section.querySelector(".about-left");
+        const right = section.querySelector(".about-right");
+
+        if (header || left || right) {
+          gsap.from(
+            [header, left, right].filter(Boolean) as Element[],
+            {
+              opacity: 0,
+              y: 40,
+              ease: "power4.out",
+              duration: 0.8,
+              stagger: 0.15,
+              scrollTrigger: {
+                trigger: section,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+
+        const cards = gsap.utils.toArray<HTMLElement>(
+          section.querySelectorAll(".about-stat-card")
+        );
+
+        if (cards.length) {
+          gsap.fromTo(
+            cards,
+            {
+              opacity: 0,
+              y: 150,
+              scale: 0.85,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              ease: "power4.out",
+              stagger: 0.1,
+              scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                end: "top 40%",
+                scrub: 1,
+              },
+            }
+          );
+        }
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        if (!sectionRef.current) return;
+        const section = sectionRef.current;
+
+        const cards = gsap.utils.toArray<HTMLElement>(
+          section.querySelectorAll(".about-stat-card")
+        );
+
+        if (cards.length) {
+          gsap.fromTo(
+            cards,
+            {
+              opacity: 0,
+              y: 30,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power4.out",
+              stagger: 0.1,
+              scrollTrigger: {
+                trigger: section,
+                start: "top 85%",
+                end: "top 40%",
+                scrub: 1,
+              },
+            }
+          );
+        }
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+      mm.revert();
+    };
+  }, []);
+
   const stats = [
     {
       icon: Shield,
@@ -30,15 +133,13 @@ export function AboutSection() {
   ];
 
   return (
-    <section id="sobre" className="py-24 relative">
-      {/* Section Header */}
+    <section
+      ref={sectionRef}
+      id="sobre"
+      className="py-24 relative md:-mt-24 z-20 bg-white"
+    >
       <div className="container mx-auto px-4 mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ amount: 0.3, once: false }}
-          className="max-w-4xl"
-        >
+        <div className="about-header max-w-4xl">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-px w-12 bg-blue-500" />
             <span className="text-blue-600 font-mono text-sm tracking-wider">01 // ORIGEM</span>
@@ -46,19 +147,12 @@ export function AboutSection() {
           <h2 className="text-4xl lg:text-5xl font-black text-[#0F172A] mb-6">
             SOBRE MIM
           </h2>
-        </motion.div>
+        </div>
       </div>
 
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
-          {/* Narrative Column */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ amount: 0.3, once: false }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
+          <div className="about-left space-y-6">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4 flex items-center gap-3">
                 <div className="w-1 h-8 bg-blue-600 rounded-full" />
@@ -101,16 +195,9 @@ export function AboutSection() {
                 </li>
               </ul>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Stats Column */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ amount: 0.3, once: false }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
+          <div className="about-right space-y-6">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-8 flex items-center gap-3">
                 <div className="w-1 h-8 bg-blue-600 rounded-full" />
@@ -119,13 +206,9 @@ export function AboutSection() {
 
               <div className="grid gap-6">
                 {stats.map((stat, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ amount: 0.3, once: false }}
-                    transition={{ delay: index * 0.1 }}
-                    className="group relative bg-gradient-to-br from-slate-50 to-blue-50 border-2 border-slate-200 hover:border-blue-400 rounded-xl p-6 transition-all duration-300 hover:shadow-lg"
+                    className="about-stat-card group relative bg-gradient-to-br from-slate-50 to-blue-50 border-2 border-slate-200 hover:border-blue-400 rounded-xl p-6 transition-all duration-300 hover:shadow-lg"
                   >
                     <div className="flex items-start gap-4">
                       <div className="p-3 bg-blue-100 border-2 border-blue-300 rounded-lg group-hover:bg-blue-600 group-hover:border-blue-600 transition-colors duration-300">
@@ -143,12 +226,12 @@ export function AboutSection() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
 
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

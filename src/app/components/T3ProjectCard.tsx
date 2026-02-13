@@ -22,7 +22,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
     >
       <div className="bg-white border-2 border-slate-200 rounded-3xl shadow-2xl overflow-hidden">
         <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-8 text-white">
-          <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
             <div className="flex-1">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full mb-4">
                 <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
@@ -38,7 +38,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
             <a
               href="/projects/t3"
               onClick={handleClick}
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg transition-all duration-300 flex items-center gap-2 font-semibold"
+              className="hidden md:inline-flex px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg transition-all duration-300 items-center gap-2 font-semibold"
             >
               <ExternalLink className="w-5 h-5" />
               EXPLORAR SISTEMA T3
