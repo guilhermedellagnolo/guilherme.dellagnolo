@@ -80,6 +80,8 @@ export function Footer() {
                       <a
                         key={index}
                         href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={`p-3 bg-white border-2 border-slate-200 hover:border-blue-400 rounded-lg transition-all duration-300 ${social.color} group`}
                         aria-label={social.label}
                       >
