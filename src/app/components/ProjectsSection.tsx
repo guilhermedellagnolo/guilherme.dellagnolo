@@ -80,6 +80,17 @@ export function ProjectsSection({ onOpenT3Project }: ProjectsSectionProps) {
           }
         );
       });
+
+      const ctas = sectionRef.current?.querySelectorAll(".t3-cta") || [];
+
+      ctas.forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top center+=100",
+          end: "bottom center-=100",
+          toggleClass: "breathing-cta",
+        });
+      });
     }, sectionRef);
 
     return () => {

@@ -9,6 +9,7 @@ import { Footer } from "./components/Footer";
 import { BackgroundDecorations } from "./components/BackgroundDecorations";
 import { TransitionCurtain } from "./components/TransitionCurtain";
 import T3ProjectPage from "./projects/t3/page";
+import Lenis from "@studio-freight/lenis";
 
 type Page = "home" | "t3";
 
@@ -28,6 +29,32 @@ export default function App() {
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [nextPage, setNextPage] = useState<Page | null>(null);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.09,
+      direction: "vertical",
+      smooth: true,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    let frameId: number;
+
+    const raf = (time: number) => {
+      lenis.raf(time);
+      frameId = requestAnimationFrame(raf);
+    };
+
+    frameId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      lenis.destroy();
+    };
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {

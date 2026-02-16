@@ -22,7 +22,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
     >
       <div className="bg-white border-2 border-slate-200 rounded-3xl shadow-2xl overflow-hidden">
         <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-8 text-white">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
             <div className="flex-1">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full mb-4">
                 <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
@@ -38,12 +38,10 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
             <motion.a
               href="/projects/t3"
               onClick={handleClick}
-              className="hidden md:inline-flex px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg transition-all duration-300 items-center gap-2 font-semibold"
-              whileTap={{ scale: 0.96 }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
+              className="t3-cta hidden md:inline-flex px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg transition-all duration-300 items-center gap-2 font-semibold"
+              whileTap={{
+                scale: 0.95,
+                transition: { type: "spring", stiffness: 400, damping: 15 },
               }}
             >
               <ExternalLink className="w-5 h-5" />
@@ -196,12 +194,10 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
             <motion.a
               href="/projects/t3"
               onClick={handleClick}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2"
-              whileTap={{ scale: 0.96 }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
+              className="t3-cta px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2"
+              whileTap={{
+                scale: 0.95,
+                transition: { type: "spring", stiffness: 400, damping: 15 },
               }}
             >
               <ExternalLink className="w-5 h-5" />

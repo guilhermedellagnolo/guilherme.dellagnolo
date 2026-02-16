@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Shield, Zap, Target, Award } from "lucide-react";
@@ -70,32 +71,95 @@ export function AboutSection() {
         if (!sectionRef.current) return;
         const section = sectionRef.current;
 
+        const isLowEndDevice =
+          typeof navigator !== "undefined" &&
+          // @ts-expect-error deviceMemory might not exist em todos navegadores
+          ((navigator.deviceMemory && navigator.deviceMemory <= 3) ||
+            /Android\s(4|5|6|7|8)/i.test(navigator.userAgent || ""));
+
+        const prefersReducedMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const liteMotion = isLowEndDevice || prefersReducedMotion;
+
         const cards = gsap.utils.toArray<HTMLElement>(
-          section.querySelectorAll(".about-stat-card")
+          section.querySelectorAll(".about-left > div")
         );
 
-        if (cards.length) {
-          gsap.fromTo(
-            cards,
-            {
+        if (!cards.length) return;
+
+        gsap.set(cards, {
+          willChange: liteMotion
+            ? "transform, opacity, border-color"
+            : "transform, opacity, filter, border-color",
+        });
+
+        const fromVars: gsap.TweenVars = liteMotion
+          ? {
+              opacity: 0,
+              y: 24,
+              scale: 0.97,
+              borderColor: "rgba(148,163,184,0.4)",
+            }
+          : {
               opacity: 0,
               y: 30,
-            },
-            {
+              scale: 0.95,
+              rotationX: 8,
+              filter: "blur(8px)",
+              transformPerspective: 900,
+              borderColor: "rgba(148,163,184,0.4)",
+            };
+
+        const toVars: gsap.TweenVars = liteMotion
+          ? {
               opacity: 1,
               y: 0,
-              duration: 0.6,
-              ease: "power4.out",
-              stagger: 0.1,
+              scale: 1,
+              borderColor: "rgba(148,163,184,1)",
+              ease: "expo.out",
+              duration: 0.85,
+              stagger: {
+                amount: 0.28,
+                from: "start",
+              },
               scrollTrigger: {
                 trigger: section,
-                start: "top 85%",
+                start: "top 90%",
                 end: "top 40%",
                 scrub: 1,
               },
+              onComplete: () => {
+                gsap.set(cards, { willChange: "" });
+              },
             }
-          );
-        }
+          : {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotationX: 0,
+              filter: "blur(0px)",
+              borderColor: "rgba(148,163,184,1)",
+              ease: "expo.out",
+              duration: 0.9,
+              stagger: {
+                amount: 0.3,
+                from: "start",
+              },
+              scrollTrigger: {
+                trigger: section,
+                start: "top 90%",
+                end: "top 40%",
+                scrub: 1,
+              },
+              onComplete: () => {
+                gsap.set(cards, { willChange: "" });
+              },
+            };
+
+        gsap.fromTo(cards, fromVars, toVars);
       });
     }, sectionRef);
 
@@ -153,7 +217,15 @@ export function AboutSection() {
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
           <div className="about-left space-y-6">
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 shadow-xl">
+            <motion.div
+              className="bg-white/80 backdrop-blur-md border-2 border-slate-200 rounded-2xl p-8 shadow-xl"
+              whileTap={{ scale: 0.98 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
+            >
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4 flex items-center gap-3">
                 <div className="w-1 h-8 bg-blue-600 rounded-full" />
                 QUEM SOU EU
@@ -169,9 +241,17 @@ export function AboutSection() {
                   Não vejo a programação apenas como linhas de código, mas como a ferramenta definitiva para resolver gargalos. Minha abordagem é direta: identificar onde o processo trava, arquitetar a solução e implementa-la.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-slate-50 border-2 border-blue-200 rounded-2xl p-8">
+            <motion.div
+              className="bg-gradient-to-br from-blue-50/80 to-slate-50/80 backdrop-blur-md border-2 border-blue-200 rounded-2xl p-8"
+              whileTap={{ scale: 0.98 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
+            >
               <h4 className="text-lg font-bold text-[#0F172A] mb-3 flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full" />
                 Princípios 
@@ -194,7 +274,7 @@ export function AboutSection() {
                   <span>Simplicidade: soluções simples que geram resultados.</span>
                 </li>
               </ul>
-            </div>
+            </motion.div>
           </div>
 
           <div className="about-right space-y-6 hidden md:block">

@@ -44,26 +44,88 @@ export function HeroSection() {
         if (!heroRef.current) return;
         const section = heroRef.current;
 
+        const isLowEndDevice =
+          typeof navigator !== "undefined" &&
+          // @ts-expect-error deviceMemory might not exist in all browsers
+          ((navigator.deviceMemory && navigator.deviceMemory <= 3) ||
+            /Android\s(4|5|6|7|8)/i.test(navigator.userAgent || ""));
+
+        const prefersReducedMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const liteMotion = isLowEndDevice || prefersReducedMotion;
+
         const items = gsap.utils.toArray<HTMLElement>(
           section.querySelectorAll(".hero-seq")
         );
 
         if (!items.length) return;
 
-        gsap.fromTo(
-          items,
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            stagger: 0.08,
-          }
-        );
+        gsap.set(items, {
+          willChange: liteMotion ? "transform" : "transform, filter",
+        });
+
+        const fromVars: gsap.TweenVars = liteMotion
+          ? {
+              opacity: 0,
+              y: 24,
+              scale: 0.97,
+            }
+          : {
+              opacity: 0,
+              y: 30,
+              scale: 0.95,
+              rotationX: 8,
+              filter: "blur(8px)",
+              transformPerspective: 900,
+            };
+
+        const toVars: gsap.TweenVars = liteMotion
+          ? {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              ease: "expo.out",
+              duration: 0.8,
+              stagger: {
+                amount: 0.28,
+                from: "start",
+              },
+              onComplete: () => {
+                gsap.set(items, { willChange: "" });
+              },
+            }
+          : {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotationX: 0,
+              filter: "blur(0px)",
+              ease: "expo.out",
+              duration: 0.9,
+              stagger: {
+                amount: 0.3,
+                from: "start",
+              },
+              onComplete: () => {
+                gsap.set(items, { willChange: "" });
+              },
+            };
+
+        gsap.fromTo(items, fromVars, toVars);
+      });
+
+      const ctas = heroRef.current?.querySelectorAll(".hero-cta") || [];
+
+      ctas.forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top center+=100",
+          end: "bottom center-=100",
+          toggleClass: "breathing-cta",
+        });
       });
     }, heroRef);
 
@@ -114,12 +176,17 @@ export function HeroSection() {
               </span>
             </div>
 
-            <h1 className="hero-seq text-4xl md:text-5xl lg:text-7xl font-black text-[#0F172A] mb-4 tracking-tight">
+            <motion.h1
+              className="hero-seq text-4xl md:text-5xl lg:text-7xl font-black text-[#0F172A] mb-4 tracking-tight"
+              initial={{ clipPath: "inset(0 0 100% 0)" }}
+              animate={{ clipPath: "inset(0 0 0% 0)" }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            >
               DESENVOLVEDOR
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
                 DE SISTEMAS
               </span>
-            </h1>
+            </motion.h1>
 
             <p className="hero-seq text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
               Desenvolvendo sistemas resistentes que curam dores reais.
@@ -129,12 +196,14 @@ export function HeroSection() {
               <motion.a
                 ref={primaryCtaRef as React.RefObject<HTMLAnchorElement>}
                 href="#projetos"
-                className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg font-semibold text-center"
-                whileTap={{ scale: 0.96 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30,
+                className="hero-cta w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg font-semibold text-center"
+                whileTap={{
+                  scale: 0.95,
+                  transition: { type: "spring", stiffness: 400, damping: 15 },
+                }}
+                onTapStart={(event) => {
+                  const target = event.target as HTMLElement;
+                  target.classList.remove("breathing-cta");
                 }}
               >
                 VER PROJETOS
@@ -142,12 +211,14 @@ export function HeroSection() {
               <motion.a
                 ref={secondaryCtaRef as React.RefObject<HTMLAnchorElement>}
                 href="https://wa.me/5547996589483"
-                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-lg shadow-lg font-semibold text-center"
-                whileTap={{ scale: 0.96 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30,
+                className="hero-cta w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-lg shadow-lg font-semibold text-center"
+                whileTap={{
+                  scale: 0.95,
+                  transition: { type: "spring", stiffness: 400, damping: 15 },
+                }}
+                onTapStart={(event) => {
+                  const target = event.target as HTMLElement;
+                  target.classList.remove("breathing-cta");
                 }}
               >
                 ENTRE EM CONTATO
