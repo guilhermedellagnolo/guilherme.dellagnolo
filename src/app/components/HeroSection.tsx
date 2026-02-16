@@ -157,7 +157,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-center text-slate-500 z-20 pointer-events-none">
+      <div className="absolute bottom-2 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-center text-slate-500 z-20 pointer-events-none">
         <div className="w-6 h-6 flex items-center justify-center">
           <svg
             className="w-4 h-4 animate-bounce"

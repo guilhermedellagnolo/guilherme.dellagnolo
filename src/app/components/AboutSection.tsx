@@ -197,7 +197,7 @@ export function AboutSection() {
             </div>
           </div>
 
-          <div className="about-right space-y-6">
+          <div className="about-right space-y-6 hidden md:block">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-8 flex items-center gap-3">
                 <div className="w-1 h-8 bg-blue-600 rounded-full" />
