@@ -127,6 +127,19 @@ export function BackgroundDecorations() {
       >
         <div className="h-full bg-gradient-to-b from-transparent via-blue-200/20 to-transparent" />
       </motion.div>
+
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.12 }}
+        transition={{ duration: 1.5, delay: 0.8 }}
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.18) 1px, transparent 0)",
+          backgroundSize: "3px 3px",
+          mixBlendMode: "soft-light",
+        }}
+      />
     </div>
   );
 }

@@ -28,12 +28,11 @@ export function useMagneticHover() {
       yTo(offsetY * 0.2);
     };
 
+    element.addEventListener("mousemove", handleMove);
     const handleLeave = () => {
       xTo(0);
       yTo(0);
     };
-
-    element.addEventListener("mousemove", handleMove);
     element.addEventListener("mouseleave", handleLeave);
 
     return () => {
@@ -44,4 +43,3 @@ export function useMagneticHover() {
 
   return ref;
 }
-

@@ -89,9 +89,9 @@ export function ProjectsSection({ onOpenT3Project }: ProjectsSectionProps) {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projetos" className="py-20 relative z-10 bg-white">
+    <section ref={sectionRef} id="projetos" className="py-16 md:py-20 relative z-10 bg-white">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mb-10 md:mb-16">
+        <div className="max-w-4xl mb-4 md:mb-10">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-px w-12 bg-blue-500" />
             <span className="text-blue-600 font-mono text-sm tracking-wider">

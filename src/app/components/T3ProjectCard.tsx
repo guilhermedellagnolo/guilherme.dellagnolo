@@ -35,14 +35,20 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                 Sistema de apontamento em tempo real (100% Offline).
               </p>
             </div>
-            <a
+            <motion.a
               href="/projects/t3"
               onClick={handleClick}
               className="hidden md:inline-flex px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg transition-all duration-300 items-center gap-2 font-semibold"
+              whileTap={{ scale: 0.96 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
             >
               <ExternalLink className="w-5 h-5" />
               EXPLORAR SISTEMA T3
-            </a>
+            </motion.a>
           </div>
         </div>
 
@@ -187,14 +193,20 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <a
+            <motion.a
               href="/projects/t3"
               onClick={handleClick}
               className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2"
+              whileTap={{ scale: 0.96 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
             >
               <ExternalLink className="w-5 h-5" />
               EXPLORAR SISTEMA T3
-            </a>
+            </motion.a>
           </div>
         </div>
       </div>

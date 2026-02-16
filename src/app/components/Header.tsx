@@ -34,7 +34,7 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`hidden md:block fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
           ? "bg-white/90 backdrop-blur-lg border-b-2 border-blue-100 shadow-lg"
           : "bg-transparent"
@@ -68,6 +68,12 @@ export function Header() {
                 key={index}
                 href={link.href}
                 whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                }}
                 className="px-6 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg hover:bg-blue-50"
               >
                 {link.label}
@@ -80,7 +86,12 @@ export function Header() {
                 handleContactScroll();
               }}
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
               className="ml-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
             >
               Contato
@@ -106,25 +117,37 @@ export function Header() {
           >
             <nav className="flex flex-col gap-2">
               {navLinks.map((link, index) => (
-                <a
+                <motion.a
                   key={index}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30,
+                  }}
                   className="px-4 py-3 text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-200"
                 >
                   {link.label}
-                </a>
+                </motion.a>
               ))}
-              <a
+              <motion.a
                 href="#contato"
                 onClick={(e) => {
                   e.preventDefault();
                   handleContactScroll();
                 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                }}
                 className="mt-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors duration-300 text-center"
               >
                 Contato
-              </a>
+              </motion.a>
             </nav>
           </motion.div>
         )}

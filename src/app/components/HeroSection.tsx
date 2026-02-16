@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagneticHover } from "../hooks/useMagneticHover";
@@ -40,16 +41,27 @@ export function HeroSection() {
       });
 
       mm.add("(max-width: 767px)", () => {
-        if (!contentRef.current) return;
+        if (!heroRef.current) return;
+        const section = heroRef.current;
+
+        const items = gsap.utils.toArray<HTMLElement>(
+          section.querySelectorAll(".hero-seq")
+        );
+
+        if (!items.length) return;
 
         gsap.fromTo(
-          contentRef.current,
-          { opacity: 0, y: 20 },
+          items,
+          {
+            opacity: 0,
+            y: 20,
+          },
           {
             opacity: 1,
             y: 0,
             duration: 0.8,
             ease: "power2.out",
+            stagger: 0.08,
           }
         );
       });
@@ -95,41 +107,68 @@ export function HeroSection() {
           </div>
 
           <div className="text-center lg:text-left max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-blue-50 border border-blue-200 rounded-full">
+            <div className="hero-seq inline-flex items-center gap-2 px-4 py-2 mb-6 bg-blue-50 border border-blue-200 rounded-full">
               <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
               <span className="text-sm font-mono text-blue-700 tracking-wider">
                 [ DISPONIVEL PARA PROJETOS ] 
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-[#0F172A] mb-4 tracking-tight">
+            <h1 className="hero-seq text-4xl md:text-5xl lg:text-7xl font-black text-[#0F172A] mb-4 tracking-tight">
               DESENVOLVEDOR
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
                 DE SISTEMAS
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
+            <p className="hero-seq text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
               Desenvolvendo sistemas resistentes que curam dores reais.
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <a
+            <div className="hero-seq flex flex-wrap gap-4 justify-center lg:justify-start">
+              <motion.a
                 ref={primaryCtaRef as React.RefObject<HTMLAnchorElement>}
                 href="#projetos"
                 className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg font-semibold text-center"
+                whileTap={{ scale: 0.96 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                }}
               >
                 VER PROJETOS
-              </a>
-              <a
+              </motion.a>
+              <motion.a
                 ref={secondaryCtaRef as React.RefObject<HTMLAnchorElement>}
                 href="https://wa.me/5547996589483"
                 className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-lg shadow-lg font-semibold text-center"
+                whileTap={{ scale: 0.96 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                }}
               >
                 ENTRE EM CONTATO
-              </a>
+              </motion.a>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-center text-slate-500">
+        <div className="w-6 h-6 flex items-center justify-center">
+          <svg
+            className="w-4 h-4 animate-bounce"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 16.5L5.5 10l1.4-1.4L12 13.7l5.1-5.1L18.5 10 12 16.5z"
+              fill="currentColor"
+            />
+          </svg>
         </div>
       </div>
     </section>
