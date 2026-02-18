@@ -2,92 +2,59 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 export function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null);
+  // Mantemos apenas as referências do ponto central e do rastro
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const trailRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const cursorPos = useRef({ x: 0, y: 0 });
-  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
-    // 1. A TRAVA JS: Verifica se é touch sem depender de estados do React
+    // 1. A TRAVA MOBILE (Mantida por segurança)
     const isTouch = 
       'ontouchstart' in window || 
       navigator.maxTouchPoints > 0 || 
       window.matchMedia('(pointer: coarse)').matches;
 
-    // Se for celular/tablet, aborta silenciosamente. O GSAP nem liga o motor.
     if (isTouch) return;
 
-    // 2. O MOTOR (Só roda no Desktop):
-    const cursor = cursorRef.current;
+    // 2. O MOTOR
     const cursorDot = cursorDotRef.current;
-    
-    // Agora as referências existem com certeza
-    if (!cursor || !cursorDot) return;
+    if (!cursorDot) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-      
+      // O ponto central segue o mouse INSTANTANEAMENTE (sem lag)
       gsap.to(cursorDot, {
         x: e.clientX,
         y: e.clientY,
-        duration: 0,
+        duration: 0, // Zero atraso
       });
 
+      // O rastro segue com um pequeno atraso e suavidade
       trailRefs.current.forEach((trail, index) => {
         if (!trail) return;
-        const delay = index * 0.02;
+        // Aumentei um pouco o delay base para o rastro ficar mais visível e fluido
+        const delay = index * 0.035; 
         gsap.to(trail, {
           x: e.clientX,
           y: e.clientY,
-          duration: 0.3 + delay,
+          duration: 0.4, // Duração um pouco maior para um rastro mais longo
           ease: 'power2.out',
+          delay: delay,
         });
       });
     };
 
-    const updateCursor = () => {
-      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.15;
-      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.15;
-
-      gsap.set(cursor, {
-        x: cursorPos.current.x,
-        y: cursorPos.current.y,
-      });
-
-      animationFrameRef.current = requestAnimationFrame(updateCursor);
-    };
-
-    const handleMouseEnter = (e: Event) => {
-      const target = e.target as HTMLElement;
-      const isMagnetic = target.hasAttribute('data-magnetic');
-      
-      gsap.to(cursor, {
-        scale: isMagnetic ? 2 : 1.5,
-        backgroundColor: 'rgba(37, 99, 235, 0.2)',
-        borderColor: 'rgba(37, 99, 235, 0.8)',
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-      
+    // Efeito simples ao passar o mouse em links: o pontinho diminui ligeiramente
+    const handleMouseEnter = () => {
       gsap.to(cursorDot, {
-        scale: 0,
+        scale: 0.7, // Fica um pouco menor para indicar precisão
+        backgroundColor: '#60a5fa', // Um azul ligeiramente mais claro (blue-400)
         duration: 0.2,
       });
     };
 
     const handleMouseLeave = () => {
-      gsap.to(cursor, {
-        scale: 1,
-        backgroundColor: 'rgba(37, 99, 235, 0.05)',
-        borderColor: 'rgba(37, 99, 235, 0.4)',
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-      
       gsap.to(cursorDot, {
         scale: 1,
+        backgroundColor: '#3b82f6', // Volta ao azul original (blue-500)
         duration: 0.2,
       });
     };
@@ -100,7 +67,6 @@ export function CustomCursor() {
     });
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    animationFrameRef.current = requestAnimationFrame(updateCursor);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -108,49 +74,40 @@ export function CustomCursor() {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
     };
   }, []);
 
   return (
-    // A TRAVA CSS: md:block esconde de celulares (telas menores que 768px), 
-    // mas garante que apareça em notebooks e monitores maiores.
-    <div className="hidden md:block pointer-events-none">
-      {[...Array(3)].map((_, i) => (
+    // A TRAVA CSS (Mantida para esconder em celulares)
+    <div className="hidden md:block pointer-events-none z-[9999]">
+      {/* O Rastro Fluido */}
+      {[...Array(5)].map((_, i) => ( // Aumentei para 5 elementos no rastro para ficar mais bonito
         <div
           key={i}
           ref={(el) => (trailRefs.current[i] = el)}
-          className="fixed top-0 left-0 rounded-full pointer-events-none z-[9998]"
+          className="fixed top-0 left-0 rounded-full pointer-events-none"
           style={{
             transform: 'translate(-50%, -50%)',
-            width: `${8 - i * 2}px`,
-            height: `${8 - i * 2}px`,
-            backgroundColor: `rgba(37, 99, 235, ${0.15 - i * 0.05})`,
+            // O rastro começa maior e vai diminuindo
+            width: `${12 - i * 2}px`, 
+            height: `${12 - i * 2}px`,
+            // O rastro começa mais transparente e desaparece
+            backgroundColor: `rgba(59, 130, 246, ${0.3 - i * 0.05})`, 
             mixBlendMode: 'screen',
             willChange: 'transform',
           }}
         />
       ))}
       
-      <div
-        ref={cursorRef}
-        className="fixed top-0 left-0 w-10 h-10 border-2 border-blue-500/40 rounded-full pointer-events-none z-[9999] transition-all"
-        style={{
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: 'rgba(37, 99, 235, 0.05)',
-          mixBlendMode: 'difference',
-          willChange: 'transform',
-        }}
-      />
-      
+      {/* O Ponto Central (Agora é o protagonista) */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-2 h-2 bg-blue-400 rounded-full pointer-events-none z-[9999]"
+        // Mudei para bg-blue-500 para ser um ponto azul sólido e nítido
+        className="fixed top-0 left-0 w-2.5 h-2.5 bg-blue-500 rounded-full pointer-events-none transition-colors"
         style={{ 
           transform: 'translate(-50%, -50%)',
-          mixBlendMode: 'difference',
+          // Removi o mixBlendMode difference para ele ser um ponto azul de luz puro
+          boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)', // Adicionei um pequeno brilho (glow)
           willChange: 'transform',
         }}
       />
