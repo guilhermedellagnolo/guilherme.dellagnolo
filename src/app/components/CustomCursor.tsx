@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 export function CustomCursor() {
@@ -8,11 +8,22 @@ export function CustomCursor() {
   const mousePos = useRef({ x: 0, y: 0 });
   const cursorPos = useRef({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>();
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    // 1. A TRAVA JS: Verifica se é touch sem depender de estados do React
+    const isTouch = 
+      'ontouchstart' in window || 
+      navigator.maxTouchPoints > 0 || 
+      window.matchMedia('(pointer: coarse)').matches;
+
+    // Se for celular/tablet, aborta silenciosamente. O GSAP nem liga o motor.
+    if (isTouch) return;
+
+    // 2. O MOTOR (Só roda no Desktop):
     const cursor = cursorRef.current;
     const cursorDot = cursorDotRef.current;
+    
+    // Agora as referências existem com certeza
     if (!cursor || !cursorDot) return;
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -50,9 +61,8 @@ export function CustomCursor() {
 
     const handleMouseEnter = (e: Event) => {
       const target = e.target as HTMLElement;
-      setIsHovering(true);
-      
       const isMagnetic = target.hasAttribute('data-magnetic');
+      
       gsap.to(cursor, {
         scale: isMagnetic ? 2 : 1.5,
         backgroundColor: 'rgba(37, 99, 235, 0.2)',
@@ -68,7 +78,6 @@ export function CustomCursor() {
     };
 
     const handleMouseLeave = () => {
-      setIsHovering(false);
       gsap.to(cursor, {
         scale: 1,
         backgroundColor: 'rgba(37, 99, 235, 0.05)',
@@ -83,7 +92,8 @@ export function CustomCursor() {
       });
     };
 
-    const interactiveElements = document.querySelectorAll('a, button, [data-magnetic], [data-card], [data-lab-card]');
+    // Aplica os eventos aos elementos interativos
+    const interactiveElements = document.querySelectorAll('a, button, [data-magnetic], [data-card], [data-lab-card], [data-about-card]');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', handleMouseEnter);
       el.addEventListener('mouseleave', handleMouseLeave);
@@ -105,7 +115,9 @@ export function CustomCursor() {
   }, []);
 
   return (
-    <>
+    // A TRAVA CSS: md:block esconde de celulares (telas menores que 768px), 
+    // mas garante que apareça em notebooks e monitores maiores.
+    <div className="hidden md:block pointer-events-none">
       {[...Array(3)].map((_, i) => (
         <div
           key={i}
@@ -142,6 +154,6 @@ export function CustomCursor() {
           willChange: 'transform',
         }}
       />
-    </>
+    </div>
   );
 }
