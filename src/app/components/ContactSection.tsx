@@ -8,7 +8,7 @@ const contacts = [
     icon: MessageCircle,
     label: 'WhatsApp',
     value: '/guilhermedellagnolo',
-    href: 'https://wa.me/5547996589483',
+    href: 'https://wa.me/5547997455202',
   },
   {
     icon: Mail,
