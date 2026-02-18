@@ -10,55 +10,49 @@ import { ParticleBackground } from './components/ParticleBackground';
 import { ParallaxBackground } from './components/ParallaxBackground';
 import { GrainOverlay } from './components/GrainOverlay';
 import { SmoothScroll } from './components/SmoothScroll';
-import { PageLoader } from './components/PageLoader';
 import { ScrollProgress } from './components/ScrollProgress';
 import { FPSCounter } from './components/FPSCounter';
 
 export default function App() {
   useEffect(() => {
-    // Hide default cursor
-    document.body.style.cursor = 'none';
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     
-    // Add cursor: none to all interactive elements
-    const style = document.createElement('style');
-    style.innerHTML = `
-      * {
-        cursor: none !important;
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      document.body.style.cursor = 'auto';
-      style.remove();
-    };
+    if (!isTouchDevice) {
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @media (hover: hover) and (pointer: fine) {
+          body, body * {
+            cursor: none !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      return () => {
+        style.remove();
+      };
+    }
   }, []);
 
   return (
     <>
-      <PageLoader />
       <ScrollProgress />
       <FPSCounter />
       <SmoothScroll>
         <div className="min-h-screen bg-[#050505] text-slate-100 overflow-x-hidden">
-          {/* Custom Cursor */}
           <CustomCursor />
-          
-          {/* Particle Background */}
           <ParticleBackground />
-          
-          {/* Parallax Background Gradients */}
           <ParallaxBackground />
-          
-          {/* Grain Overlay */}
           <GrainOverlay />
 
-          {/* Content */}
           <div className="relative z-10">
             <Header />
             
-            <main className="max-w-6xl mx-auto px-4 lg:px-6 pt-10 pb-20 space-y-32 lg:space-y-40">
+            <div className="min-h-screen flex items-center justify-center px-4 lg:px-6">
               <Hero />
+            </div>
+
+            <main className="max-w-6xl mx-auto px-4 lg:px-6 pb-20 space-y-32 lg:space-y-40">
               <WorksSection />
               <LabSection />
               <AboutSection />

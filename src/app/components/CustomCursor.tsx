@@ -7,6 +7,7 @@ export function CustomCursor() {
   const trailRefs = useRef<(HTMLDivElement | null)[]>([]);
   const mousePos = useRef({ x: 0, y: 0 });
   const cursorPos = useRef({ x: 0, y: 0 });
+  const animationFrameRef = useRef<number>();
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
@@ -14,18 +15,15 @@ export function CustomCursor() {
     const cursorDot = cursorDotRef.current;
     if (!cursor || !cursorDot) return;
 
-    // Mouse move handler
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
       
-      // Dot follows immediately
       gsap.to(cursorDot, {
         x: e.clientX,
         y: e.clientY,
         duration: 0,
       });
 
-      // Animate trail dots
       trailRefs.current.forEach((trail, index) => {
         if (!trail) return;
         const delay = index * 0.02;
@@ -38,7 +36,6 @@ export function CustomCursor() {
       });
     };
 
-    // Smooth cursor follow
     const updateCursor = () => {
       cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.15;
       cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.15;
@@ -48,15 +45,13 @@ export function CustomCursor() {
         y: cursorPos.current.y,
       });
 
-      requestAnimationFrame(updateCursor);
+      animationFrameRef.current = requestAnimationFrame(updateCursor);
     };
 
-    // Hover effects on interactive elements
     const handleMouseEnter = (e: Event) => {
       const target = e.target as HTMLElement;
       setIsHovering(true);
       
-      // Larger scale for magnetic elements
       const isMagnetic = target.hasAttribute('data-magnetic');
       gsap.to(cursor, {
         scale: isMagnetic ? 2 : 1.5,
@@ -88,15 +83,14 @@ export function CustomCursor() {
       });
     };
 
-    // Add listeners to interactive elements
     const interactiveElements = document.querySelectorAll('a, button, [data-magnetic], [data-card], [data-lab-card]');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', handleMouseEnter);
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
-    window.addEventListener('mousemove', handleMouseMove);
-    updateCursor();
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    animationFrameRef.current = requestAnimationFrame(updateCursor);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -104,12 +98,14 @@ export function CustomCursor() {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, []);
 
   return (
     <>
-      {/* Trail dots */}
       {[...Array(3)].map((_, i) => (
         <div
           key={i}
@@ -121,11 +117,11 @@ export function CustomCursor() {
             height: `${8 - i * 2}px`,
             backgroundColor: `rgba(37, 99, 235, ${0.15 - i * 0.05})`,
             mixBlendMode: 'screen',
+            willChange: 'transform',
           }}
         />
       ))}
       
-      {/* Main cursor ring */}
       <div
         ref={cursorRef}
         className="fixed top-0 left-0 w-10 h-10 border-2 border-blue-500/40 rounded-full pointer-events-none z-[9999] transition-all"
@@ -133,16 +129,17 @@ export function CustomCursor() {
           transform: 'translate(-50%, -50%)',
           backgroundColor: 'rgba(37, 99, 235, 0.05)',
           mixBlendMode: 'difference',
+          willChange: 'transform',
         }}
       />
       
-      {/* Cursor dot */}
       <div
         ref={cursorDotRef}
         className="fixed top-0 left-0 w-2 h-2 bg-blue-400 rounded-full pointer-events-none z-[9999]"
         style={{ 
           transform: 'translate(-50%, -50%)',
           mixBlendMode: 'difference',
+          willChange: 'transform',
         }}
       />
     </>

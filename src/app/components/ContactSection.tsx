@@ -31,9 +31,9 @@ const contacts = [
 ];
 
 const availability = [
-  'Arquitetura de sistemas industriais.',
-  'Automações com foco em operação real.',
-  'Interfaces de alta densidade de informação.',
+  'Novos Projetos & MVPs.',
+  'Automação de Processos.',
+  'Parcerias de Longo Prazo.',
 ];
 
 export function ContactSection() {
@@ -43,94 +43,81 @@ export function ContactSection() {
     <section
       id="contact"
       ref={ref}
-      className="space-y-10 rounded-3xl border border-slate-800/80 bg-gradient-to-b from-slate-950/90 to-slate-950/60 px-5 sm:px-8 py-10 lg:py-12 scroll-mt-24"
+      className="rounded-3xl border border-slate-800/80 bg-gradient-to-b from-slate-950/90 to-slate-950/60 px-6 py-10 md:px-10 md:py-12 scroll-mt-24"
     >
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-        {/* Intro */}
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        
+        {/* LADO ESQUERDO: Visão e Contexto (Agora mais robusto) */}
         <motion.div
-          className="flex-1 space-y-4"
+          className="space-y-8"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xs font-mono tracking-[0.2em] text-blue-300 uppercase">
-            Digital Handshake
-          </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-50 leading-tight">
-            Pronto para eliminar cegueira operacional da sua operação industrial?
-          </h2>
-          <p className="text-sm text-slate-300 max-w-xl leading-relaxed">
-            Se você lidera uma indústria ou responde por operação, arquitetura de sistemas e
-            automação não podem ser caixinhas isoladas. Vamos desenhar juntos uma camada de
-            sistemas que protege seu resultado em tempo real.
-          </p>
-        </motion.div>
-
-        {/* Contact Links */}
-        <motion.div
-          className="w-full max-w-md space-y-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          <div className="space-y-3">
-            <p className="text-xs font-mono tracking-[0.18em] text-slate-400 uppercase">
-              Canais principais
+          <div className="space-y-4">
+            <p className="text-xs font-mono tracking-[0.2em] text-blue-400 uppercase">
+              Vamos construir juntos
             </p>
-            <div className="space-y-2">
-              {contacts.map((contact, index) => {
-                const Icon = contact.icon;
-                return (
-                  <MagneticButton
-                    key={contact.label}
-                    href={contact.href}
-                    strength={0.3}
-                    className="flex items-center justify-between px-4 py-3 rounded-lg bg-slate-900/80 border border-slate-800/80 hover:border-blue-500/60 hover:bg-slate-900 text-slate-100 transition-colors group w-full"
-                  >
-                    <div className="flex items-center gap-3">
-                      <motion.div 
-                        className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/30"
-                        whileHover={{ rotate: 5 }}
-                      >
-                        <Icon className="w-4 h-4 text-blue-400" />
-                      </motion.div>
-                      <span className="text-sm font-medium">{contact.label}</span>
-                    </div>
-                    <span className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
-                      {contact.value}
-                    </span>
-                  </MagneticButton>
-                );
-              })}
-            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-50 leading-tight">
+              Tem um desafio técnico ou uma ideia ambiciosa?
+            </h2>
+            <p className="text-base text-slate-300 leading-relaxed max-w-lg">
+              Não sou agência, sou parceiro. Se você precisa de arquitetura sólida e execução técnica para tirar seu projeto do papel, vamos conversar. Meu foco é transformar ideias em sistemas que realmente funcionam, com código limpo e escalável. 
+            </p>
           </div>
 
-          {/* Availability */}
-          <motion.div
-            className="space-y-2 text-xs text-slate-400"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5 }}
-          >
-            <p>Disponível para projetos de:</p>
-            <ul className="space-y-1 text-slate-200">
+          {/* Movi a disponibilidade para cá para encher a esquerda */}
+          <div className="space-y-4 border-t border-slate-800/60 pt-6">
+            <p className="text-xs font-mono tracking-[0.1em] text-slate-500 uppercase">
+              Disponível para
+            </p>
+            <ul className="space-y-2 text-slate-300 text-sm">
               {availability.map((item, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.6 + i * 0.05 }}
-                  className="flex items-start gap-2"
-                >
-                  <span className="text-blue-400 mt-0.5">·</span>
+                <li key={i} className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500/50" />
                   <span>{item}</span>
-                </motion.li>
+                </li>
               ))}
             </ul>
-            <p className="pt-2 text-slate-400">
-              Joinville, SC, Brasil · Status: operando em modo offline-first.
+            <p className="text-xs text-slate-500 pt-2">
+              Joinville, SC · Status: <span className="text-emerald-400">Operando</span>
             </p>
-          </motion.div>
+          </div>
+        </motion.div>
+
+        {/* LADO DIREITO: Ação Pura (Apenas os botões) */}
+        <motion.div
+          className="w-full space-y-4 lg:pt-2"
+          initial={{ opacity: 0, x: 20 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+           <p className="text-xs font-mono tracking-[0.1em] text-slate-500 uppercase mb-4 hidden lg:block">
+              Canais Diretos
+            </p>
+          <div className="grid gap-3">
+            {contacts.map((contact, index) => {
+              const Icon = contact.icon;
+              return (
+                <MagneticButton
+                  key={contact.label}
+                  href={contact.href}
+                  strength={0.2}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800/60 hover:border-blue-500/40 hover:bg-slate-800/80 transition-all group"
+                >
+                  <div className="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="text-sm font-semibold text-slate-100">{contact.label}</span>
+                    <span className="text-xs text-slate-500 group-hover:text-blue-300 transition-colors">
+                      {contact.value}
+                    </span>
+                  </div>
+                </MagneticButton>
+              );
+            })}
+          </div>
         </motion.div>
       </div>
     </section>

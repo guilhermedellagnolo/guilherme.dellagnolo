@@ -48,7 +48,7 @@ export function Header() {
             </div>
             <div className="hidden sm:flex flex-col">
               <span className="text-xs font-mono text-slate-400 tracking-[0.2em] uppercase">
-                SYSTEM ARCHITECT
+                Desenvolvendo soluções
               </span>
               <span className="text-sm font-medium text-slate-100 group-hover:text-slate-50 transition-colors">
                 Guilherme Dell'Agnolo
@@ -71,7 +71,7 @@ export function Header() {
               className="px-4 py-2 rounded-lg hover:bg-slate-800/80 hover:text-slate-50 transition-colors"
               data-magnetic
             >
-              Evidence Layer
+              Projetos
             </a>
             <a
               href="#lab"
