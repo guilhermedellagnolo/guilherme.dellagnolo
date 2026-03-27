@@ -1,14 +1,10 @@
-import { motion } from "motion/react";
-
 export function BackgroundDecorations() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {/* Corner Technical Lines */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        transition={{ duration: 1 }}
-        className="absolute top-0 left-0 w-64 h-64"
+      <div
+        className="absolute top-0 left-0 w-64 h-64 animate-fade-in opacity-0"
+        style={{ animationDelay: "0s", animationFillMode: "forwards" }}
       >
         <svg viewBox="0 0 200 200" className="w-full h-full">
           <line x1="0" y1="0" x2="200" y2="0" stroke="#2563EB" strokeWidth="2" />
@@ -19,13 +15,11 @@ export function BackgroundDecorations() {
           <line x1="40" y1="0" x2="40" y2="40" stroke="#2563EB" strokeWidth="1" strokeDasharray="2,2" />
           <line x1="0" y1="40" x2="40" y2="40" stroke="#2563EB" strokeWidth="1" strokeDasharray="2,2" />
         </svg>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        transition={{ duration: 1, delay: 0.2 }}
-        className="absolute top-0 right-0 w-64 h-64"
+      <div
+        className="absolute top-0 right-0 w-64 h-64 animate-fade-in opacity-0"
+        style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
       >
         <svg viewBox="0 0 200 200" className="w-full h-full">
           <line x1="0" y1="0" x2="200" y2="0" stroke="#2563EB" strokeWidth="2" />
@@ -34,13 +28,11 @@ export function BackgroundDecorations() {
           <circle cx="160" cy="0" r="2" fill="#2563EB" />
           <circle cx="200" cy="40" r="2" fill="#2563EB" />
         </svg>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        transition={{ duration: 1, delay: 0.4 }}
-        className="absolute bottom-0 left-0 w-64 h-64"
+      <div
+        className="absolute bottom-0 left-0 w-64 h-64 animate-fade-in opacity-0"
+        style={{ animationDelay: "0.4s", animationFillMode: "forwards" }}
       >
         <svg viewBox="0 0 200 200" className="w-full h-full">
           <line x1="0" y1="200" x2="200" y2="200" stroke="#2563EB" strokeWidth="2" />
@@ -49,13 +41,11 @@ export function BackgroundDecorations() {
           <circle cx="40" cy="200" r="2" fill="#2563EB" />
           <circle cx="0" cy="160" r="2" fill="#2563EB" />
         </svg>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        transition={{ duration: 1, delay: 0.6 }}
-        className="absolute bottom-0 right-0 w-64 h-64"
+      <div
+        className="absolute bottom-0 right-0 w-64 h-64 animate-fade-in opacity-0"
+        style={{ animationDelay: "0.6s", animationFillMode: "forwards" }}
       >
         <svg viewBox="0 0 200 200" className="w-full h-full">
           <line x1="0" y1="200" x2="200" y2="200" stroke="#2563EB" strokeWidth="2" />
@@ -64,20 +54,11 @@ export function BackgroundDecorations() {
           <circle cx="160" cy="200" r="2" fill="#2563EB" />
           <circle cx="200" cy="160" r="2" fill="#2563EB" />
         </svg>
-      </motion.div>
+      </div>
 
-      {/* Floating Tech Elements */}
-      <motion.div
-        animate={{
-          y: [0, -20, 0],
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute top-1/4 left-1/4 w-32 h-32"
+      {/* Floating Tech Elements — CSS-only infinite animations */}
+      <div
+        className="absolute top-1/4 left-1/4 w-32 h-32 animate-float-bg-up"
       >
         <svg viewBox="0 0 100 100" className="w-full h-full">
           <rect
@@ -92,20 +73,11 @@ export function BackgroundDecorations() {
           />
           <circle cx="50" cy="50" r="3" fill="#2563EB" />
         </svg>
-      </motion.div>
+      </div>
 
-      <motion.div
-        animate={{
-          y: [0, 20, 0],
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-        className="absolute top-2/3 right-1/4 w-24 h-24"
+      <div
+        className="absolute top-2/3 right-1/4 w-24 h-24 animate-float-bg-down"
+        style={{ animationDelay: "1s" }}
       >
         <svg viewBox="0 0 100 100" className="w-full h-full">
           <polygon
@@ -116,24 +88,21 @@ export function BackgroundDecorations() {
             strokeDasharray="2,2"
           />
         </svg>
-      </motion.div>
+      </div>
 
       {/* Data Stream Lines */}
-      <motion.div
-        className="absolute left-1/2 top-0 h-full w-px"
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: 1 }}
-        transition={{ duration: 2, delay: 0.5 }}
+      <div
+        className="absolute left-1/2 top-0 h-full w-px animate-scale-y-in"
+        style={{ transformOrigin: "top" }}
       >
         <div className="h-full bg-gradient-to-b from-transparent via-blue-200/20 to-transparent" />
-      </motion.div>
+      </div>
 
-      <motion.div
-        className="absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.12 }}
-        transition={{ duration: 1.5, delay: 0.8 }}
+      <div
+        className="absolute inset-0 animate-fade-in opacity-0"
         style={{
+          animationDelay: "0.8s",
+          animationFillMode: "forwards",
           backgroundImage:
             "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.18) 1px, transparent 0)",
           backgroundSize: "3px 3px",

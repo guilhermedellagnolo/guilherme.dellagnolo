@@ -26,9 +26,17 @@ export function SkillsSection() {
             <div className="h-px w-12 bg-blue-500" />
             <span className="text-blue-600 font-mono text-sm tracking-wider">02 // ARSENAL</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-[#0F172A] mb-6">
-            CONHECIMENTOS
-          </h2>
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: "100%", opacity: 0 }}
+              whileInView={{ y: "0%", opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+              className="text-4xl lg:text-5xl font-black text-foreground mb-6"
+            >
+              CONHECIMENTOS
+            </motion.h2>
+          </div>
           <p className="text-xl text-slate-600 leading-relaxed">
             Ferramentas que geram resultado e eficiencia.
           </p>
@@ -37,18 +45,9 @@ export function SkillsSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {skillCategories.map((category, index) => (
             <FadeInUp key={index} delay={index * 0.1}>
-              <motion.div
-                className="skills-card group relative"
-                animate={{
-                  y: [0, -8, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: (index % 3) * 1.5,
-                }}
-                whileTap={{ scale: 0.98 }}
+              <div
+                className="skills-card group relative animate-float-subtle"
+                style={{ animationDelay: `${(index % 3) * 1.5}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
 
@@ -57,7 +56,7 @@ export function SkillsSection() {
                     <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-lg group-hover:bg-blue-600 group-hover:border-blue-600 transition-all duration-300">
                       <category.icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300" />
                     </div>
-                    <h3 className="font-bold text-lg text-[#0F172A]">
+                    <h3 className="font-bold text-lg text-foreground">
                       {category.title}
                     </h3>
                   </div>
@@ -73,7 +72,7 @@ export function SkillsSection() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </FadeInUp>
           ))}
         </div>
@@ -82,11 +81,13 @@ export function SkillsSection() {
           <FadeInUp delay={0.2}>
             <motion.div
               className="bg-gradient-to-br from-slate-50/80 to-blue-50/80 backdrop-blur-md border-2 border-blue-200 rounded-2xl p-8"
-              whileTap={{ scale: 0.98 }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
+              whileTap={{
+                scale: 0.98,
+                transition: {
+                  type: "tween",
+                  duration: 0.2,
+                  ease: [0.25, 1, 0.5, 1],
+                },
               }}
             >
               <div className="flex items-start gap-4">
@@ -94,7 +95,7 @@ export function SkillsSection() {
                   <Code2 className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-bold text-[#0F172A] mb-2">Stack</h4>
+                  <h4 className="font-bold text-foreground mb-2">Stack</h4>
                   <p className="text-slate-700 leading-relaxed">
                     Minha stack não segue o &quot;hype&quot;, segue a missão. Priorizo ferramentas que garantem autonomia operacional, integridade de dados e velocidade de decisão. Se a ferramenta adiciona complexidade sem trazer lucro, ela é descartada.
                   </p>

@@ -38,9 +38,17 @@ export function AboutSection() {
             <div className="h-px w-12 bg-blue-500" />
             <span className="text-blue-600 font-mono text-sm tracking-wider">01 // ORIGEM</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-[#0F172A] mb-6">
-            SOBRE MIM
-          </h2>
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: "100%", opacity: 0 }}
+              whileInView={{ y: "0%", opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+              className="text-4xl lg:text-5xl font-black text-foreground mb-6"
+            >
+              SOBRE MIM
+            </motion.h2>
+          </div>
         </FadeInUp>
       </div>
 
@@ -50,14 +58,16 @@ export function AboutSection() {
             <FadeInUp delay={0.1}>
               <motion.div
                 className="bg-white/80 backdrop-blur-md border-2 border-slate-200 rounded-2xl p-8 shadow-xl"
-                whileTap={{ scale: 0.98 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30,
+                whileTap={{
+                  scale: 0.98,
+                  transition: {
+                    type: "tween",
+                    duration: 0.2,
+                    ease: [0.25, 1, 0.5, 1],
+                  },
                 }}
               >
-                <h3 className="text-2xl font-bold text-[#0F172A] mb-4 flex items-center gap-3">
+                <h3 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-3">
                   <div className="w-1 h-8 bg-blue-600 rounded-full" />
                   QUEM SOU EU
                 </h3>
@@ -78,14 +88,16 @@ export function AboutSection() {
             <FadeInUp delay={0.2}>
               <motion.div
                 className="bg-gradient-to-br from-blue-50/80 to-slate-50/80 backdrop-blur-md border-2 border-blue-200 rounded-2xl p-8"
-                whileTap={{ scale: 0.98 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30,
+                whileTap={{
+                  scale: 0.98,
+                  transition: {
+                    type: "tween",
+                    duration: 0.2,
+                    ease: [0.25, 1, 0.5, 1],
+                  },
                 }}
               >
-                <h4 className="text-lg font-bold text-[#0F172A] mb-3 flex items-center gap-2">
+                <h4 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full" />
                   Princípios
                 </h4>
@@ -114,7 +126,7 @@ export function AboutSection() {
           <div className="about-right space-y-6 hidden md:block">
             <FadeInUp delay={0.2}>
               <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 shadow-xl">
-                <h3 className="text-2xl font-bold text-[#0F172A] mb-8 flex items-center gap-3">
+                <h3 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-3">
                   <div className="w-1 h-8 bg-blue-600 rounded-full" />
                   PILARES DA MINHA ATUAÇÃO
                 </h3>
@@ -131,7 +143,7 @@ export function AboutSection() {
                             <div className="text-3xl font-black text-blue-600 mb-1">
                               {stat.value}
                             </div>
-                            <div className="font-semibold text-[#0F172A] mb-1">
+                            <div className="font-semibold text-foreground mb-1">
                               {stat.label}
                             </div>
                             <div className="text-sm text-slate-600">

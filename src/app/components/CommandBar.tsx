@@ -21,7 +21,7 @@ export function CommandBar() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setIsOpen(!isOpen);
+        setIsOpen((prev) => !prev);
       }
       if (e.key === "Escape") {
         setIsOpen(false);
@@ -31,7 +31,7 @@ export function CommandBar() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, []);
 
   const handleCommand = (cmd: string) => {
     const element = document.getElementById(cmd);
@@ -46,8 +46,9 @@ export function CommandBar() {
     <>
       {/* Trigger Button */}
       <motion.button
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
         onClick={() => setIsOpen(true)}
         className="fixed bottom-8 right-8 z-50 px-6 py-4 bg-white border-2 border-blue-200 hover:border-blue-400 rounded-xl shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 flex items-center gap-3 group backdrop-blur-sm"
       >

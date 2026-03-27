@@ -15,9 +15,10 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
       className="max-w-6xl mx-auto"
     >
       <div className="bg-white border-2 border-slate-200 rounded-3xl shadow-2xl overflow-hidden">
@@ -38,10 +39,17 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
             <motion.a
               href="/projects/t3"
               onClick={handleClick}
-              className="t3-cta hidden md:inline-flex px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg transition-all duration-300 items-center gap-2 font-semibold"
+              className="t3-cta hidden md:inline-flex px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/40 hover:border-white rounded-lg transition-all duration-300 items-center gap-2 font-semibold"
+              whileHover={{
+                scale: 1.02,
+              }}
               whileTap={{
-                scale: 0.95,
-                transition: { type: "spring", stiffness: 400, damping: 15 },
+                scale: 0.98,
+                transition: {
+                  type: "tween",
+                  duration: 0.2,
+                  ease: [0.25, 1, 0.5, 1],
+                },
               }}
             >
               <ExternalLink className="w-5 h-5" />
@@ -52,7 +60,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
 
         <div className="p-8">
           <div className="mb-8">
-            <h4 className="text-2xl font-bold text-[#0F172A] mb-4 flex items-center gap-3">
+            <h4 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-3">
               <div className="w-1 h-8 bg-blue-600 rounded-full" />
               Missão
             </h4>
@@ -72,7 +80,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
           <div className="space-y-8">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
-                <h5 className="text-lg font-bold text-[#0F172A] mb-4">
+                <h5 className="text-lg font-bold text-foreground mb-4">
                   Stack Tecnológico
                 </h5>
                 <div className="space-y-3">
@@ -81,7 +89,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                       ▸
                     </span>
                     <div>
-                      <div className="font-semibold text-sm text-[#0F172A]">
+                      <div className="font-semibold text-sm text-foreground">
                         Core & Backend
                       </div>
                       <div className="text-sm text-slate-600">
@@ -94,7 +102,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                       ▸
                     </span>
                     <div>
-                      <div className="font-semibold text-sm text-[#0F172A]">
+                      <div className="font-semibold text-sm text-foreground">
                         Interface
                       </div>
                       <div className="text-sm text-slate-600">
@@ -107,7 +115,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                       ▸
                     </span>
                     <div>
-                      <div className="font-semibold text-sm text-[#0F172A]">
+                      <div className="font-semibold text-sm text-foreground">
                         Infraestrutura
                       </div>
                       <div className="text-sm text-slate-600">
@@ -120,7 +128,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
               </div>
 
               <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
-                <h5 className="text-lg font-bold text-[#0F172A] mb-4">
+                <h5 className="text-lg font-bold text-foreground mb-4">
                   Resultados Obtidos
                 </h5>
                 <div className="space-y-3">
@@ -128,7 +136,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                     <span className="text-green-600 font-mono text-sm mt-1">
                       ✓
                     </span>
-                    <div className="font-semibold text-sm text-[#0F172A]">
+                    <div className="font-semibold text-sm text-foreground">
                       100% UPTIME // Operação blindada. A fábrica continua
                       produzindo mesmo com falha total de rede.
                     </div>
@@ -137,7 +145,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                     <span className="text-green-600 font-mono text-sm mt-1">
                       ✓
                     </span>
-                    <div className="font-semibold text-sm text-[#0F172A]">
+                    <div className="font-semibold text-sm text-foreground">
                       ZERO DATA LOSS // Integridade absoluta. O buffer local
                       (Edge DB) garante que nenhum apontamento se perca.
                     </div>
@@ -146,7 +154,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
                     <span className="text-green-600 font-mono text-sm mt-1">
                       ✓
                     </span>
-                    <div className="font-semibold text-sm text-[#0F172A]">
+                    <div className="font-semibold text-sm text-foreground">
                       HARDWARE AGNOSTIC // Alta performance mesmo em PCs
                       antigos, eliminando custos com infraestrutura nova.
                     </div>
@@ -156,7 +164,7 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
             </div>
 
             <div className="bg-gradient-to-br from-slate-50 to-blue-50 border-2 border-blue-200 rounded-2xl p-8">
-              <h5 className="text-xl font-bold text-[#0F172A] mb-4">
+              <h5 className="text-xl font-bold text-foreground mb-4">
                 Decisões
               </h5>
               <div className="space-y-4 text-slate-700 leading-relaxed">
@@ -194,10 +202,17 @@ export function T3ProjectCard({ onOpenProject }: T3ProjectCardProps) {
             <motion.a
               href="/projects/t3"
               onClick={handleClick}
-              className="t3-cta px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2"
+              className="t3-cta px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2 border-2 border-blue-600 hover:border-blue-400"
+              whileHover={{
+                scale: 1.02,
+              }}
               whileTap={{
-                scale: 0.95,
-                transition: { type: "spring", stiffness: 400, damping: 15 },
+                scale: 0.98,
+                transition: {
+                  type: "tween",
+                  duration: 0.2,
+                  ease: [0.25, 1, 0.5, 1],
+                },
               }}
             >
               <ExternalLink className="w-5 h-5" />

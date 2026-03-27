@@ -7,11 +7,18 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -34,7 +41,7 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`hidden md:block fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
           ? "bg-white/90 backdrop-blur-lg border-b-2 border-blue-100 shadow-lg"
           : "bg-transparent"
@@ -55,7 +62,7 @@ export function Header() {
               </div>
             </div>
             <div className="hidden md:block">
-              <div className="font-black text-lg text-[#0F172A] leading-tight">
+              <div className="font-black text-lg text-foreground leading-tight">
                 Guilherme Dell&apos;agnolo
               </div>
             </div>
@@ -67,12 +74,14 @@ export function Header() {
               <motion.a
                 key={index}
                 href={link.href}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.96 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30,
+                whileHover={{ scale: 1.02 }}
+                whileTap={{
+                  scale: 0.98,
+                  transition: {
+                    type: "tween",
+                    duration: 0.2,
+                    ease: [0.25, 1, 0.5, 1],
+                  },
                 }}
                 className="px-6 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg hover:bg-blue-50"
               >
@@ -85,14 +94,16 @@ export function Header() {
                 e.preventDefault();
                 handleContactScroll();
               }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.96 }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
+              whileHover={{ scale: 1.02 }}
+              whileTap={{
+                scale: 0.98,
+                transition: {
+                  type: "tween",
+                  duration: 0.2,
+                  ease: [0.25, 1, 0.5, 1],
+                },
               }}
-              className="ml-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+              className="ml-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-600 hover:border-blue-400"
             >
               Contato
             </motion.a>
@@ -121,11 +132,13 @@ export function Header() {
                   key={index}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  whileTap={{ scale: 0.96 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30,
+                  whileTap={{
+                    scale: 0.98,
+                    transition: {
+                      type: "tween",
+                      duration: 0.2,
+                      ease: [0.25, 1, 0.5, 1],
+                    },
                   }}
                   className="px-4 py-3 text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-200"
                 >
@@ -138,13 +151,15 @@ export function Header() {
                   e.preventDefault();
                   handleContactScroll();
                 }}
-                whileTap={{ scale: 0.96 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30,
+                whileTap={{
+                  scale: 0.98,
+                  transition: {
+                    type: "tween",
+                    duration: 0.2,
+                    ease: [0.25, 1, 0.5, 1],
+                  },
                 }}
-                className="mt-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors duration-300 text-center"
+                className="mt-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors duration-300 text-center border-2 border-blue-600 hover:border-blue-400"
               >
                 Contato
               </motion.a>

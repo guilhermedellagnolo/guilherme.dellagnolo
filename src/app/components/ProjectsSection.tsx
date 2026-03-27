@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { T3ProjectCard } from "./T3ProjectCard";
@@ -12,7 +13,6 @@ export function ProjectsSection({ onOpenT3Project }: ProjectsSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const ctas = sectionRef.current?.querySelectorAll(".t3-cta") || [];
 
@@ -41,9 +41,17 @@ export function ProjectsSection({ onOpenT3Project }: ProjectsSectionProps) {
               03 // PORTFÓLIO
             </span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-[#0F172A] mb-6">
-            PROJETOS &amp; SOLUÇÕES.
-          </h2>
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: "100%", opacity: 0 }}
+              whileInView={{ y: "0%", opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+              className="text-4xl lg:text-5xl font-black text-foreground mb-6"
+            >
+              PROJETOS &amp; SOLUÇÕES.
+            </motion.h2>
+          </div>
           <p className="text-xl text-slate-600 leading-relaxed">
             Tecnologia aplicada para gerar resultado.
           </p>

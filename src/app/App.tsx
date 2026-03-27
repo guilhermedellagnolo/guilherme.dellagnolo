@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import gsap from "gsap";
 import { Header } from "./components/Header";
 import { HeroSection } from "./components/HeroSection";
 import { AboutSection } from "./components/AboutSection";
@@ -8,8 +9,9 @@ import { ProjectsSection } from "./components/ProjectsSection";
 import { Footer } from "./components/Footer";
 import { BackgroundDecorations } from "./components/BackgroundDecorations";
 import { TransitionCurtain } from "./components/TransitionCurtain";
-import T3ProjectPage from "./projects/t3/page";
 import Lenis from "@studio-freight/lenis";
+
+const T3ProjectPage = lazy(() => import("./projects/t3/page"));
 
 type Page = "home" | "t3";
 
@@ -35,23 +37,18 @@ export default function App() {
       duration: 1.1,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       lerp: 0.09,
-      direction: "vertical",
-      smooth: true,
       smoothTouch: false,
-      touchMultiplier: 2,
     });
 
-    let frameId: number;
-
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frameId = requestAnimationFrame(raf);
+    const onTick = (time: number) => {
+      lenis.raf(time * 1000);
     };
 
-    frameId = requestAnimationFrame(raf);
+    gsap.ticker.add(onTick);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      gsap.ticker.remove(onTick);
       lenis.destroy();
     };
   }, []);
@@ -103,10 +100,10 @@ export default function App() {
           {page === "home" && (
             <motion.div
               key="home"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.43, 0.13, 0.23, 0.96] }}
+              exit={{ opacity: 0, y: -24 }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
             >
               <Header />
               <main>
@@ -122,13 +119,15 @@ export default function App() {
           {page === "t3" && (
             <motion.div
               key="t3"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.43, 0.13, 0.23, 0.96] }}
+              exit={{ opacity: 0, y: -24 }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
               className="relative"
             >
-              <T3ProjectPage onBackToPortfolio={() => navigateTo("home")} />
+              <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
+                <T3ProjectPage onBackToPortfolio={() => navigateTo("home")} />
+              </Suspense>
             </motion.div>
           )}
         </AnimatePresence>

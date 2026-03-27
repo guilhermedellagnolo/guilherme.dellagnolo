@@ -38,10 +38,12 @@ export function Footer() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16 max-w-6xl mx-auto">
               <div className="lg:col-span-1">
                 <div>
-                  <h3 className="text-2xl font-black text-[#0F172A] mb-4">
-                    GUILHERME
-                    <span className="block text-blue-600">ARQUITETO DE SISTEMAS</span>
-                  </h3>
+                  <div className="overflow-hidden">
+                    <h3 className="text-2xl font-black text-foreground mb-4">
+                      GUILHERME
+                      <span className="block text-blue-600">ARQUITETO DE SISTEMAS</span>
+                    </h3>
+                  </div>
                   <p className="text-slate-600 leading-relaxed mb-6">
                     Arquitetura de sistemas industriais, automações e interfaces de alta densidade.
                   </p>
@@ -56,7 +58,7 @@ export function Footer() {
 
               <div>
                 <div>
-                  <h4 className="font-bold text-lg text-[#0F172A] mb-6">Navegação</h4>
+                  <h4 className="font-bold text-lg text-foreground mb-6">Navegação</h4>
                   <nav className="space-y-3">
                     {["sobre", "skills", "projetos"].map((link) => (
                       <a
@@ -74,7 +76,7 @@ export function Footer() {
 
               <div>
                 <div>
-                  <h4 className="font-bold text-lg text-[#0F172A] mb-6">Conectar</h4>
+                  <h4 className="font-bold text-lg text-foreground mb-6">Conectar</h4>
                   <div className="flex flex-wrap gap-3">
                     {socialLinks.map((social, index) => (
                       <a
@@ -82,7 +84,7 @@ export function Footer() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`p-3 bg-white border-2 border-slate-200 hover:border-blue-400 rounded-lg transition-all duration-300 ${social.color} group`}
+                        className={`p-3 bg-white border-2 border-slate-200 hover:border-blue-400 rounded-lg transition-all duration-300 hover:scale-[1.02] ${social.color} group`}
                         aria-label={social.label}
                       >
                         <social.icon className="w-5 h-5 text-slate-600 group-hover:text-current transition-colors" />
